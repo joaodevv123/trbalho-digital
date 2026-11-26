@@ -1,16 +1,21 @@
 main:
-    addi $a0,$zero,0x10010000
-    add $a1,$zero,10
+    addi $s0,$zero,0x10010000
+    addi $s1, $zero, 18
+    add $a0, $zero, $s0
+    add $a1,$zero,$s1
     jal criar_vetor
 
-    add $a0,$v0,$zero
+    add $a0,$s0,$zero
     add $a1,$zero,$zero
-    addi $a2,$zero,9
+    add $t0, $s1, -1
+    add $a2,$zero,$t0
     jal mergesort 
+    li $v0,10
+    syscall
 
 criar_vetor:    
-    loop_cria_vetor:
     add $v0,$a0,$zero
+    loop_cria_vetor:
     sw $a1,0($a0)
     addi $a0,$a0,4
     addi $a1,$a1,-1
@@ -61,6 +66,8 @@ mergesort:
     lw $s0,-20($fp)
     addi $sp,$fp,4
     lw $fp,-4($sp)
+    
+    jr $ra
 
 #a0 = vetor,a1=esquerda,a2 = meio,a3 = direita
 merge:
